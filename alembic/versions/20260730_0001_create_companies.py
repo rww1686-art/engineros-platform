@@ -38,7 +38,6 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("edrpou"),
     )
     op.create_index(op.f("ix_companies_city"), "companies", ["city"], unique=False)
     op.create_index(op.f("ix_companies_edrpou"), "companies", ["edrpou"], unique=True)
