@@ -15,14 +15,47 @@ class CompanyRepository:
         return await self.session.get(Company, company_id)
 
     async def get_by_edrpou(self, edrpou: str) -> Company | None:
-        result = await self.session.execute(select(Company).whe…1286 tokens truncated…n)
-        if is_active is not None:
-            query = query.where(Region.is_active == is_active)
-        rows = await self.session.execute(query.order_by(Region.name))
-        return list(rows.scalars().all())
+        result = await self.session.execute(select(Company).where(Company.edrpou == edrpou))
+        return result.scalar_one_or_none()
 
-    async def add(self, region: Region) -> Region:
-        self.session.add(region)
+    async def list(
+        self,
+        *,
+        limit: int,
+        offset: int,
+        name: str | None = None,
+        edrpou: str | None = None,
+        region: str | None = None,
+        region_id: uuid.UUID | None = None,
+        city: str | None = None,
+        status: str | None = None,
+    ) -> tuple[list[Company], int]:
+        filters: list[ColumnElement[bool]] = []
+        if name:
+            filters.append(Company.name.ilike(f"%{name}%"))
+        if edrpou:
+            filters.append(Company.edrpou == edrpou)
+        if region:
+            filters.append(Company.region == region)
+        if region_id:
+            filters.append(Company.region_id == region_id)
+        if city:
+            filters.append(Company.city == city)
+        if status:
+            filters.append(Company.status == status)
+
+        query = select(Company).where(*filters).order_by(Company.name).limit(limit).offset(offset)
+        count_query = select(func.count()).select_from(Company).where(*filters)
+        rows = await self.session.execute(query)
+        total = await self.session.scalar(count_query)
+        return list(rows.scalars().all()), int(total or 0)
+
+    async def add(self, company: Company) -> Company:
+        self.session.add(company)
         await self.session.flush()
-        await self.session.refresh(region)
-        return region
+        await self.session.refresh(company)
+        return company
+
+    async def delete(self, company: Company) -> None:
+        await self.session.delete(company)
+        await self.session.flush()
