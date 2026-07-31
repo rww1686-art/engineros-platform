@@ -1,21 +1,24 @@
 import uuid
 
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql.elements import ColumnElement
 
-from app.models.company import Company
+from app.models.region import Region
 
 
-class CompanyRepository:
+class RegionRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def get(self, company_id: uuid.UUID) -> Company | None:
-        return await self.session.get(Company, company_id)
+    async def get(self, region_id: uuid.UUID) -> Region | None:
+        return await self.session.get(Region, region_id)
 
-    async def get_by_edrpou(self, edrpou: str) -> Company | None:
-        result = await self.session.execute(select(Company).whe…1286 tokens truncated…n)
+    async def get_by_code(self, code: str) -> Region | None:
+        result = await self.session.execute(select(Region).where(Region.code == code))
+        return result.scalar_one_or_none()
+
+    async def list(self, *, is_active: bool | None = None) -> list[Region]:
+        query = select(Region)
         if is_active is not None:
             query = query.where(Region.is_active == is_active)
         rows = await self.session.execute(query.order_by(Region.name))

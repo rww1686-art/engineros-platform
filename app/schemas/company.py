@@ -11,6 +11,7 @@ class CompanyBase(BaseModel):
     name: str = Field(min_length=2, max_length=255)
     edrpou: str | None = None
     region: str | None = Field(default=None, max_length=120)
+    region_id: uuid.UUID | None = None
     city: str | None = Field(default=None, max_length=120)
     website: HttpUrl | None = None
     status: str = Field(default="active", min_length=2, max_length=32)
@@ -39,6 +40,7 @@ class CompanyUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=2, max_length=255)
     edrpou: str | None = None
     region: str | None = Field(default=None, max_length=120)
+    region_id: uuid.UUID | None = None
     city: str | None = Field(default=None, max_length=120)
     website: HttpUrl | None = None
     status: str | None = Field(default=None, min_length=2, max_length=32)

@@ -27,6 +27,7 @@ async def list_companies(
     name: str | None = None,
     edrpou: str | None = None,
     region: str | None = None,
+    region_id: uuid.UUID | None = None,
     city: str | None = None,
     status_filter: str | None = Query(default=None, alias="status"),
 ) -> CompanyList:
@@ -36,6 +37,7 @@ async def list_companies(
         name=name,
         edrpou=edrpou,
         region=region,
+        region_id=region_id,
         city=city,
         status=status_filter,
     )
