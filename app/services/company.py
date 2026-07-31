@@ -16,7 +16,10 @@ class CompanyService:
 
     async def create(self, payload: CompanyCreate) -> Company:
         if payload.edrpou and await self.repository.get_by_edrpou(payload.edrpou):
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="EDRPOU already exists")
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="EDRPOU already exists",
+            )
         company = Company(**payload.model_dump(mode="json"))
         try:
             company = await self.repository.add(company)
@@ -24,7 +27,10 @@ class CompanyService:
             return company
         except IntegrityError as exc:
             await self.session.rollback()
-            raise HTTPException(status_code=409, detail="Company conflicts with existing data") from exc
+            raise HTTPException(
+                status_code=409,
+                detail="Company conflicts with existing data",
+            ) from exc
 
     async def get(self, company_id: uuid.UUID) -> Company:
         company = await self.repository.get(company_id)
@@ -48,7 +54,10 @@ class CompanyService:
             return company
         except IntegrityError as exc:
             await self.session.rollback()
-            raise HTTPException(status_code=409, detail="Company conflicts with existing data") from exc
+            raise HTTPException(
+                status_code=409,
+                detail="Company conflicts with existing data",
+            ) from exc
 
     async def delete(self, company_id: uuid.UUID) -> None:
         company = await self.get(company_id)

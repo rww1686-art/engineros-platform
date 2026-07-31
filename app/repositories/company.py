@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.elements import ColumnElement
 
 from app.models.company import Company
 
@@ -28,7 +29,7 @@ class CompanyRepository:
         city: str | None = None,
         status: str | None = None,
     ) -> tuple[list[Company], int]:
-        filters = []
+        filters: list[ColumnElement[bool]] = []
         if name:
             filters.append(Company.name.ilike(f"%{name}%"))
         if edrpou:
