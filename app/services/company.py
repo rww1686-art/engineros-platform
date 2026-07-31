@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.company import Company
+from app.models.region import Region
 from app.repositories.company import CompanyRepository
 from app.schemas.company import CompanyCreate, CompanyUpdate
 
@@ -20,7 +21,10 @@ class CompanyService:
                 status_code=status.HTTP_409_CONFLICT,
                 detail="EDRPOU already exists",
             )
-        company = Company(**payload.model_dump(mode="json"))
+        await self._ensure_region_exists(payload.region_id)
+        values = payload.model_dump(mode="json")
+        values["region_id"] = payload.region_id
+        company = Company(**values)
         try:
             company = await self.repository.add(company)
             await self.session.commit()
@@ -41,6 +45,9 @@ class CompanyService:
     async def update(self, company_id: uuid.UUID, payload: CompanyUpdate) -> Company:
         company = await self.get(company_id)
         changes = payload.model_dump(exclude_unset=True, mode="json")
+        if "region_id" in changes:
+            await self._ensure_region_exists(payload.region_id)
+            changes["region_id"] = payload.region_id
         new_edrpou = changes.get("edrpou")
         if new_edrpou:
             existing = await self.repository.get_by_edrpou(new_edrpou)
@@ -63,3 +70,7 @@ class CompanyService:
         company = await self.get(company_id)
         await self.repository.delete(company)
         await self.session.commit()
+
+    async def _ensure_region_exists(self, region_id: uuid.UUID | None) -> None:
+        if region_id is not None and await self.session.get(Region, region_id) is None:
+            raise HTTPException(status_code=404, detail="Region not found")

@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, String, func
+from sqlalchemy import DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -14,6 +14,9 @@ class Company(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     edrpou: Mapped[str | None] = mapped_column(String(8), unique=True, nullable=True, index=True)
     region: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    region_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("regions.id", ondelete="SET NULL"), nullable=True, index=True
+    )
     city: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
     website: Mapped[str | None] = mapped_column(String(500), nullable=True)
     status: Mapped[str] = mapped_column(String(32), nullable=False, default="active", index=True)

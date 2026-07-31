@@ -26,6 +26,7 @@ class CompanyRepository:
         name: str | None = None,
         edrpou: str | None = None,
         region: str | None = None,
+        region_id: uuid.UUID | None = None,
         city: str | None = None,
         status: str | None = None,
     ) -> tuple[list[Company], int]:
@@ -36,6 +37,8 @@ class CompanyRepository:
             filters.append(Company.edrpou == edrpou)
         if region:
             filters.append(Company.region == region)
+        if region_id:
+            filters.append(Company.region_id == region_id)
         if city:
             filters.append(Company.city == city)
         if status:
