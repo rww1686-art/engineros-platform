@@ -1,7 +1,7 @@
 from functools import lru_cache
 
-from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import model_validator
 
 
 INSECURE_DEFAULT_DATABASE_URL = (
@@ -23,7 +23,8 @@ class Settings(BaseSettings):
         if environment in PRODUCTION_ENVIRONMENTS:
             if self.database_url == INSECURE_DEFAULT_DATABASE_URL:
                 raise ValueError(
-                    "Production requires an explicit DATABASE_URL; the development default is forbidden."
+                    "Production requires an explicit DATABASE_URL; "
+                    "the development default is forbidden."
                 )
             if "engineros:engineros@" in self.database_url:
                 raise ValueError(
