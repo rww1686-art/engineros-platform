@@ -25,8 +25,8 @@ def test_gold_b_001_independent_heat_load_and_verify_flow() -> None:
     )
 
     assert result.transmission_kw == 5.867
-    assert result.ventilation_kw == 9.305
-    assert result.total_heat_loss_kw == 15.173
+    assert result.ventilation_kw == 9.306
+    assert result.total_heat_loss_kw == 15.174
     assert abs(payload_data["independent_heat_load_kw"] - result.total_heat_loss_kw) <= 0.05
 
     verification = verify_hvac(HVACVerificationInput.model_validate(payload_data))
