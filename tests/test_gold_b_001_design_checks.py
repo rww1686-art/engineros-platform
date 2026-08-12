@@ -39,6 +39,7 @@ def test_gold_b_001_design_point_hydraulics_and_report() -> None:
 
     report = render_verification_report(verification)
     assert "ENGINEROS VERIFY" in report
-    assert "Overall status: **PASS**" in report
+    assert "Core verification status: **PASS**" in report
+    assert "not a customer-grade release decision" in report
     assert "HVAC-LOAD-001" in report
     assert "NO CRITICAL CLAIM WITHOUT EVIDENCE" in report
