@@ -1,0 +1,57 @@
+{
+  "project_id": "REAL-R12-001",
+  "active_revision": 12,
+  "supersedes": [1,2,3,4,5,6,7,8,9,10,11],
+  "sources": [
+    {
+      "id": "SRC-R12-01",
+      "type": "project",
+      "name": "ОВК_R12_ПОВНИЙ_ПРОЕКТ_КОРИГОВАНИЙ.pdf",
+      "traceable": true
+    },
+    {
+      "id": "SRC-R12-02",
+      "type": "specification",
+      "name": "ОВК_R12_СПЕЦИФІКАЦІЯ_КОШТОРИС_ПІСЛЯ_VERIFY.xlsx",
+      "traceable": true
+    },
+    {
+      "id": "SRC-GREE-UA",
+      "type": "manufacturer",
+      "name": "GREE Ukraine Versati IV Split / monobloc",
+      "url": "https://gree.com.ua/catalog/otoplenie-nagrev-vody/versati-iv-split-monoblok/",
+      "model": "GRS-CQ16Pd/NhG3-M",
+      "supply": "400/50/3",
+      "rated_heating_kw": 15.7,
+      "fcu_cooling_kw": 13.8,
+      "traceable": true
+    }
+  ],
+  "verified": {
+    "revision_consistency": true,
+    "evidence_traceability": true,
+    "buffer_volume_l": 300,
+    "fcu_cooling_capacity_each_kw_min": 12.0,
+    "fcu_water_flow_each_m3_h": 2.064,
+    "heat_pump_model": "GRS-CQ16Pd/NhG3-M",
+    "heat_pump_supply": "400/50/3",
+    "heat_pump_rated_heating_kw": 15.7,
+    "heat_pump_fcu_cooling_kw": 13.8,
+    "exact_minus20_w45_benchmark_kw": 7.27
+  },
+  "open_evidence_gaps": {
+    "project_address_and_design_climate": true,
+    "envelope_u_values_and_geometry": true,
+    "independent_final_heat_load": true,
+    "exact_minus22_w45_manufacturer_point": true,
+    "exact_gas_boiler_model": true,
+    "exact_fcu_models_and_esp_curves": true,
+    "radiator_manufacturer_outputs_45_35": true
+  },
+  "release": {
+    "customer_report_integrity": true,
+    "reproducible": true,
+    "procurement_hold": true,
+    "customer_grade_release_ready": false
+  }
+}
