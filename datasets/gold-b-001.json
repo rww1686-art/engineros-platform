@@ -15,10 +15,10 @@
     ]
   },
   "declared_heat_load_kw": 15.8,
-  "independent_heat_load_kw": 15.2,
+  "independent_heat_load_kw": 15.174,
   "equipment_capacity_kw": 16.0,
   "design_flow_m3_h": 2.75,
-  "required_flow_m3_h": 2.62,
+  "required_flow_m3_h": 2.61,
   "drawing_equipment_capacity_kw": 16.0,
   "calculation_equipment_capacity_kw": 16.0,
   "specification_equipment_capacity_kw": 16.0,
@@ -27,7 +27,7 @@
       "fact_id": "EFO-LOAD-001",
       "object_id": "GOLD-B-001",
       "fact_type": "independent_heat_load_kw",
-      "value": 15.2,
+      "value": 15.174,
       "unit": "kW",
       "evidence": [
         {
