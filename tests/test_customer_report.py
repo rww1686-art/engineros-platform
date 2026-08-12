@@ -1,4 +1,4 @@
-from app.schemas.verify import HVACVerificationInput, EOR, VerificationStatus
+from app.schemas.verify import EOR, HVACVerificationInput, VerificationStatus
 from app.services.customer_readiness import evaluate_customer_grade_readiness
 from app.services.evidence_gate import DesignPointEvidenceResult
 from app.services.verify import verify_hvac
