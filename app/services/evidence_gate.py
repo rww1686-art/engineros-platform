@@ -48,5 +48,8 @@ def verify_design_point_evidence(
         covered=False,
         source_id=None,
         capacity_kw=None,
-        reason="No exact manufacturer evidence point is available for the requested design condition.",
+        reason=(
+            "No exact manufacturer evidence point is available "
+            "for the requested design condition."
+        ),
     )
