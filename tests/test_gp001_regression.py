@@ -18,12 +18,13 @@ def test_gp001_ground_truth_is_complete_and_unique() -> None:
     findings = data["findings"]
     ids = [item["id"] for item in findings]
 
-    assert len(findings) == data["expected_count"] == 34
+    assert len(findings) == data["expected_count"] == 30
     assert len(ids) == len(set(ids))
-    assert "ETR-02" in ids
-    assert "TX-01" in ids
-    assert "SZ-04" in ids
-    assert "EE-02" in ids
+    assert "ETR-001" in ids
+    assert "MEDGAS-001" in ids
+    assert "SZ-001" in ids
+    assert "DHW-001" in ids
+    assert "PS-02" not in ids
 
 
 def test_gp001_kernel_regression_gate_reproduces_ground_truth() -> None:
@@ -38,7 +39,7 @@ def test_gp001_kernel_regression_gate_reproduces_ground_truth() -> None:
                 evidence_id=evidence_id,
                 object_id=data["project_id"],
                 source_type="drawing",
-                source="GP-001 audit evidence",
+                source="GP-001 primary-source R8 evidence",
                 locator=item["locator"],
             )
         )
@@ -49,7 +50,7 @@ def test_gp001_kernel_regression_gate_reproduces_ground_truth() -> None:
                 discipline=item["discipline"],
                 severity=item["severity"],
                 proposed_status=VerificationStatus(item["status"]),
-                message=f"Еталонний дефект {item['priority']}: {item['title']}",
+                message=f"Еталонна перевірка {item['priority']}: {item['title']}",
                 evidence_ids=[evidence_id],
                 gates=[
                     GateType.DESIGN,
