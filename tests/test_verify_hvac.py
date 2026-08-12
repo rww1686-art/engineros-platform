@@ -64,12 +64,14 @@ def test_verify_hvac_detects_capacity_and_document_conflict() -> None:
 
     result = verify_hvac(payload)
 
+    failed_ids = {
+        item.finding_id
+        for item in result.findings
+        if item.status == VerificationStatus.FAIL
+    }
     assert result.status == VerificationStatus.FAIL
     assert result.failed_checks == 2
-    assert {item.finding_id for item in result.findings if item.status == VerificationStatus.FAIL} == {
-        "HVAC-CAP-001",
-        "HVAC-CONFLICT-001",
-    }
+    assert failed_ids == {"HVAC-CAP-001", "HVAC-CONFLICT-001"}
 
 
 def test_verify_hvac_reports_insufficient_data() -> None:
