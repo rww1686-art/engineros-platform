@@ -54,6 +54,11 @@ def render_customer_verification_report(
     readiness: CustomerGradeReadinessResult,
 ) -> str:
     """Render a client-facing report using the final evidence-readiness status."""
+    evidence_source = (
+        f"Evidence source: `{readiness.source_id}`"
+        if readiness.source_id
+        else "Evidence source: none"
+    )
     lines = [
         "# ENGINEROS VERIFY — HVAC PROJECT AUDIT",
         "",
@@ -62,7 +67,7 @@ def render_customer_verification_report(
         f"Core verification status: **{result.status.value}**",
         f"Customer-grade: **{'YES' if readiness.customer_grade else 'NO'}**",
         f"Release decision: {readiness.reason}",
-        f"Evidence source: `{readiness.source_id}`" if readiness.source_id else "Evidence source: none",
+        evidence_source,
         f"Assessed checks: {result.assessed_checks}",
         f"Failed/review checks: {result.failed_checks}",
         "",
