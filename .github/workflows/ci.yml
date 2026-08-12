@@ -13,6 +13,7 @@ jobs:
     env:
       DATABASE_URL: postgresql+psycopg://engineros:engineros@localhost:5432/engineros
       RUN_INTEGRATION_TESTS: "1"
+      PGPASSWORD: engineros
 
     services:
       postgres:
@@ -42,8 +43,14 @@ jobs:
       - name: Install package and development dependencies
         run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
 
+      - name: Verify dependency consistency
+        run: python -m pip check
+
       - name: Apply database migrations
         run: alembic upgrade head
+
+      - name: Compile application
+        run: python -m compileall -q app
 
       - name: Ruff
         run: ruff check .
@@ -53,3 +60,55 @@ jobs:
 
       - name: Pytest
         run: pytest
+
+      - name: Runtime health and OpenAPI smoke
+        run: |
+          uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-server-header > /tmp/engineros-uvicorn.log 2>&1 &
+          APP_PID=$!
+          trap 'kill $APP_PID || true' EXIT
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8000/health > /tmp/health.json; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent http://127.0.0.1:8000/health | python -m json.tool
+          curl --fail --silent http://127.0.0.1:8000/openapi.json > /tmp/openapi.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          schema = json.loads(Path('/tmp/openapi.json').read_text())
+          assert schema.get('openapi'), 'OpenAPI version missing'
+          assert '/health' in schema.get('paths', {}), 'health endpoint missing from OpenAPI'
+          assert schema.get('info', {}).get('title'), 'OpenAPI title missing'
+          print('OpenAPI runtime validation PASS')
+          PY
+
+      - name: Verify backup and restore
+        run: |
+          pg_dump -h localhost -U engineros -d engineros -Fc -f /tmp/engineros.dump
+          createdb -h localhost -U engineros engineros_restore
+          pg_restore -h localhost -U engineros -d engineros_restore /tmp/engineros.dump
+          psql -h localhost -U engineros -d engineros_restore -Atc "SELECT version_num FROM alembic_version;" | grep -Eq '^[0-9a-f]+'
+          dropdb -h localhost -U engineros engineros_restore
+
+      - name: Verify migration rollback and recovery
+        run: |
+          alembic downgrade base
+          alembic upgrade head
+          psql -h localhost -U engineros -d engineros -Atc "SELECT version_num FROM alembic_version;" | grep -Eq '^[0-9a-f]+'
+
+      - name: Build hardened container
+        run: docker build --pull --tag engineros-platform:ci .
+
+      - name: Verify container runs as non-root
+        run: |
+          test "$(docker image inspect engineros-platform:ci --format '{{.Config.User}}')" = "engineros"
+
+      - name: Verify production configuration rejects insecure defaults
+        run: |
+          if APP_ENVIRONMENT=production DATABASE_URL='postgresql+psycopg://engineros:engineros@db:5432/engineros' python -c 'from app.core.config import Settings; Settings()'; then
+            echo 'ERROR: insecure production configuration was accepted'
+            exit 1
+          fi
