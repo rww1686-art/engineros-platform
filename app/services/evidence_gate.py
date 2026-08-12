@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+DESIGN_POINT_TOLERANCE_C = 0.01
+
 
 @dataclass(frozen=True)
 class ManufacturerEvidencePoint:
@@ -17,6 +19,10 @@ class DesignPointEvidenceResult:
     reason: str
 
 
+def _same_temperature(actual: float, expected: float) -> bool:
+    return abs(actual - expected) <= DESIGN_POINT_TOLERANCE_C
+
+
 def verify_design_point_evidence(
     *,
     points: list[ManufacturerEvidencePoint],
@@ -26,11 +32,18 @@ def verify_design_point_evidence(
     matches = [
         point
         for point in points
-        if point.outdoor_temp_c == outdoor_temp_c
-        and point.leaving_water_temp_c == leaving_water_temp_c
+        if _same_temperature(point.outdoor_temp_c, outdoor_temp_c)
+        and _same_temperature(point.leaving_water_temp_c, leaving_water_temp_c)
     ]
     if len(matches) == 1:
         point = matches[0]
+        if point.capacity_kw <= 0:
+            return DesignPointEvidenceResult(
+                covered=False,
+                source_id=None,
+                capacity_kw=None,
+                reason="Manufacturer evidence capacity must be positive.",
+            )
         return DesignPointEvidenceResult(
             covered=True,
             source_id=point.source_id,
