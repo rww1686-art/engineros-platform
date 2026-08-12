@@ -12,8 +12,19 @@ class VerificationStatus(StrEnum):
     PASS_WITH_CONDITIONS = "PASS WITH CONDITIONS"
     REVIEW_REQUIRED = "REVIEW REQUIRED"
     FAIL = "FAIL"
+    HOLD = "HOLD"
     INSUFFICIENT_DATA = "INSUFFICIENT DATA"
     NOT_ASSESSED = "NOT ASSESSED"
+    NOT_CHECKED = "NOT CHECKED"
+    NOT_APPLICABLE = "N/A"
+
+
+class GateType(StrEnum):
+    DESIGN = "DESIGN"
+    PROCUREMENT = "PROCUREMENT"
+    INSTALLATION = "INSTALLATION"
+    COMMISSIONING = "COMMISSIONING"
+    RELEASE = "RELEASE"
 
 
 class EvidenceRef(BaseModel):
@@ -94,8 +105,8 @@ class Finding(BaseModel):
 
     @model_validator(mode="after")
     def critical_claim_requires_evidence(self) -> "Finding":
-        if self.severity in {"HIGH", "CRITICAL"} and not self.evidence_ids:
-            raise ValueError("HIGH/CRITICAL finding requires evidence")
+        if self.severity in {"HIGH", "CRITICAL"} and self.status == VerificationStatus.FAIL and not self.evidence_ids:
+            raise ValueError("HIGH/CRITICAL FAIL requires evidence")
         return self
 
 
@@ -105,3 +116,45 @@ class HVACVerificationResult(BaseModel):
     findings: list[Finding]
     assessed_checks: int
     failed_checks: int
+
+
+class ProjectCheckInput(BaseModel):
+    """Canonical input for one independent verification check."""
+
+    check_id: str = Field(min_length=1, max_length=120)
+    title: str = Field(min_length=1, max_length=255)
+    discipline: str = Field(min_length=1, max_length=64)
+    severity: Literal["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    proposed_status: VerificationStatus
+    message: str = Field(min_length=1, max_length=2000)
+    evidence_ids: list[str] = Field(default_factory=list)
+    gates: list[GateType] = Field(default_factory=list)
+    applicable: bool = True
+
+
+class ProjectVerificationInput(BaseModel):
+    project_id: str = Field(min_length=1, max_length=120)
+    checks: list[ProjectCheckInput] = Field(default_factory=list)
+    evidence_objects: list[EEO] = Field(default_factory=list)
+    expected_check_ids: list[str] = Field(default_factory=list)
+
+
+class GateResult(BaseModel):
+    gate: GateType
+    status: VerificationStatus
+    blocking_findings: list[str] = Field(default_factory=list)
+
+
+class ProjectVerificationResult(BaseModel):
+    project_id: str
+    status: VerificationStatus
+    findings: list[Finding]
+    gates: list[GateResult]
+    planned_checks: int
+    completed_checks: int
+    coverage_pct: float
+    failed_checks: int
+    hold_checks: int
+    missing_check_ids: list[str] = Field(default_factory=list)
+    evidence_coverage_pct: float
+    release_allowed: bool
