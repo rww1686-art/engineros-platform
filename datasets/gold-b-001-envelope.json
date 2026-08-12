@@ -17,11 +17,12 @@
     {"id": "DOOR-01", "type": "external_door", "area_m2": 6.0, "u_w_m2k": 1.30}
   ],
   "ventilation": {
-    "air_changes_per_hour": 0.55,
+    "air_changes_per_hour": 1.09,
     "heat_recovery_efficiency": 0.0
   },
   "notes": [
     "Synthetic controlled baseline for kernel validation only.",
+    "Air-change input includes combined ventilation and infiltration design allowance.",
     "Must not be presented as verified customer/project evidence.",
     "Replace with real project geometry, U-values, infiltration and ventilation data for commercial audit."
   ]
