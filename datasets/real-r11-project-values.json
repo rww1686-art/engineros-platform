@@ -1,0 +1,35 @@
+{
+  "project_id": "REAL-R11-001",
+  "active_revision": 11,
+  "sources": [
+    {
+      "source_id": "R11-PDF",
+      "name": "ОВК_R11_ПОВНИЙ_ПРОЕКТ.pdf",
+      "revision": 11,
+      "status": "ACTIVE"
+    },
+    {
+      "source_id": "R9-XLSX",
+      "name": "ОВК_Розрахунок_специфікація_кошторис_R9.xlsx",
+      "revision": 9,
+      "status": "SUPERSEDED"
+    }
+  ],
+  "values": [
+    {"key": "buffer_volume_l", "value": 300, "source_id": "R11-PDF", "revision": 11, "unit": "l"},
+    {"key": "buffer_volume_l", "value": "100-200", "source_id": "R9-XLSX", "revision": 9, "unit": "l"},
+    {"key": "fcu_cooling_capacity_each_kw", "value": 12.0, "source_id": "R11-PDF", "revision": 11, "unit": "kW"},
+    {"key": "fcu_cooling_capacity_each_kw", "value": 6.3, "source_id": "R9-XLSX", "revision": 9, "unit": "kW"},
+    {"key": "fcu_water_flow_each_m3_h", "value": 2.06, "source_id": "R11-PDF", "revision": 11, "unit": "m3/h"},
+    {"key": "fcu_water_flow_each_m3_h", "value": 1.29, "source_id": "R9-XLSX", "revision": 9, "unit": "m3/h"},
+    {"key": "ventilation_outdoor_air_each_floor_m3_h", "value": 140, "source_id": "R11-PDF", "revision": 11, "unit": "m3/h"},
+    {"key": "ventilation_outdoor_air_each_floor_m3_h", "value": 140, "source_id": "R9-XLSX", "revision": 9, "unit": "m3/h"}
+  ],
+  "unresolved_active_fields": [
+    "exact_heat_pump_variant",
+    "exact_gas_boiler_model_and_capacity",
+    "verified_building_envelope",
+    "independent_design_heat_load",
+    "exact_manufacturer_capacity_at_project_design_point"
+  ]
+}
