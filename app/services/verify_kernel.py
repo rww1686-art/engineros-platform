@@ -23,9 +23,12 @@ def _critic_status(check, known_evidence: set[str]) -> VerificationStatus:
     if not check.applicable:
         return VerificationStatus.NOT_APPLICABLE
 
-    if check.proposed_status == VerificationStatus.FAIL and check.severity in CRITICAL_SEVERITIES:
-        if not set(check.evidence_ids) & known_evidence:
-            return VerificationStatus.HOLD
+    if (
+        check.proposed_status == VerificationStatus.FAIL
+        and check.severity in CRITICAL_SEVERITIES
+        and not set(check.evidence_ids) & known_evidence
+    ):
+        return VerificationStatus.HOLD
 
     return check.proposed_status
 
@@ -126,7 +129,10 @@ def verify_project(payload: ProjectVerificationInput) -> ProjectVerificationResu
         overall = VerificationStatus.PASS
 
     release_gate = next(item for item in gates if item.gate == GateType.RELEASE)
-    release_allowed = overall == VerificationStatus.PASS and release_gate.status == VerificationStatus.PASS
+    release_allowed = (
+        overall == VerificationStatus.PASS
+        and release_gate.status == VerificationStatus.PASS
+    )
 
     return ProjectVerificationResult(
         project_id=payload.project_id,
