@@ -105,7 +105,11 @@ class Finding(BaseModel):
 
     @model_validator(mode="after")
     def critical_claim_requires_evidence(self) -> "Finding":
-        if self.severity in {"HIGH", "CRITICAL"} and self.status == VerificationStatus.FAIL and not self.evidence_ids:
+        critical_failure = (
+            self.severity in {"HIGH", "CRITICAL"}
+            and self.status == VerificationStatus.FAIL
+        )
+        if critical_failure and not self.evidence_ids:
             raise ValueError("HIGH/CRITICAL FAIL requires evidence")
         return self
 
