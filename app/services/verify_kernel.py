@@ -4,6 +4,7 @@ from app.schemas.verify import (
     Finding,
     GateResult,
     GateType,
+    ProjectCheckInput,
     ProjectVerificationInput,
     ProjectVerificationResult,
     VerificationStatus,
@@ -13,13 +14,11 @@ BLOCKING_STATUSES = {VerificationStatus.FAIL, VerificationStatus.HOLD}
 CRITICAL_SEVERITIES = {"HIGH", "CRITICAL"}
 
 
-def _critic_status(check, known_evidence: set[str]) -> VerificationStatus:
-    """Adversarial evidence firewall.
-
-    A critical FAIL is only allowed when at least one referenced evidence object
-    exists in the submitted evidence registry. Unsupported critical claims are
-    downgraded to HOLD instead of being presented as proven defects.
-    """
+def _critic_status(
+    check: ProjectCheckInput,
+    known_evidence: set[str],
+) -> VerificationStatus:
+    """Apply the adversarial evidence firewall to one check."""
     if not check.applicable:
         return VerificationStatus.NOT_APPLICABLE
 
