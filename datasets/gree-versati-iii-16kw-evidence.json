@@ -1,0 +1,17 @@
+{
+  "evidence_id": "EEO-GREE-V3-16-001",
+  "manufacturer": "GREE",
+  "product_family": "Versati III Split",
+  "model": "GRSCQ16PdG/NhH2-E",
+  "source_url": "https://gree.com.ua/catalog/otoplenie-nagrev-vody/gree-versati-iii-split-vse-v-odnom/",
+  "source_type": "manufacturer_web_catalog",
+  "captured_fact": {
+    "heating_capacity_kw_at_7c_db_6c_wb_and_30_35c_water": 15.5,
+    "heating_power_input_kw_same_condition": 3.44,
+    "cop_same_condition": 4.5,
+    "heating_outdoor_operating_range_c": [-25, 35],
+    "heating_water_temperature_range_c": [20, 60]
+  },
+  "verification_note": "Manufacturer web evidence confirms nominal 15.5 kW heating capacity at the published rating condition. It does NOT provide a -20C / W45 capacity value. Therefore ENGINEROS must not infer design-point capacity at -20C/W45 from this nominal rating.",
+  "evidence_status": "TRACEABLE_MANUFACTURER_SOURCE_PARTIAL_DESIGN_POINT_COVERAGE"
+}
