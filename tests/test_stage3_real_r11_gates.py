@@ -5,7 +5,8 @@ from app.services.stage3_gate import (
 )
 
 
-def test_stage3_real_r11_gate_run_after_recheck() -> None:
+def test_historical_r11_gate_state_before_r12_evidence_upgrade() -> None:
+    """Preserve the pre-R12 result; canonical current state is derived from R12 evidence."""
     state = Stage3EvidenceState(
         intake_sources_present=True,
         revision_consistency=True,
