@@ -1,0 +1,87 @@
+{
+  "object": {
+    "object_id": "GOLD-B-001",
+    "name": "ENGINEROS HVAC GOLD-B-001",
+    "discipline": "HVAC",
+    "design_outdoor_temp_c": -20.0,
+    "design_indoor_temp_c": 22.0,
+    "heated_area_m2": 220.0,
+    "evidence": [
+      {
+        "evidence_id": "EEO-001",
+        "source": "gold-b-001-envelope.json",
+        "locator": "building envelope baseline"
+      }
+    ]
+  },
+  "declared_heat_load_kw": 15.8,
+  "independent_heat_load_kw": 15.174,
+  "equipment_capacity_kw": 16.0,
+  "design_flow_m3_h": 2.75,
+  "required_flow_m3_h": 2.61,
+  "drawing_equipment_capacity_kw": 16.0,
+  "calculation_equipment_capacity_kw": 16.0,
+  "specification_equipment_capacity_kw": 16.0,
+  "facts": [
+    {
+      "fact_id": "EFO-LOAD-001",
+      "object_id": "GOLD-B-001",
+      "fact_type": "independent_heat_load_kw",
+      "value": 15.174,
+      "unit": "kW",
+      "evidence": [
+        {
+          "evidence_id": "EEO-002",
+          "source": "gold-b-001-independent-load.json",
+          "locator": "result.total_heat_loss_kw"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "EDO-HP-001",
+      "object_id": "GOLD-B-001",
+      "decision_type": "selected_heat_pump_capacity_kw",
+      "selected_value": 16.0,
+      "unit": "kW",
+      "evidence": [
+        {
+          "evidence_id": "EEO-003",
+          "source": "gold-b-001-equipment.json",
+          "locator": "selected equipment"
+        }
+      ]
+    }
+  ],
+  "evidence_objects": [
+    {
+      "evidence_id": "EEO-001",
+      "object_id": "GOLD-B-001",
+      "source_type": "input",
+      "source": "gold-b-001-envelope.json",
+      "locator": "building envelope baseline"
+    },
+    {
+      "evidence_id": "EEO-002",
+      "object_id": "GOLD-B-001",
+      "source_type": "calculation",
+      "source": "gold-b-001-independent-load.json",
+      "locator": "result.total_heat_loss_kw"
+    },
+    {
+      "evidence_id": "EEO-003",
+      "object_id": "GOLD-B-001",
+      "source_type": "specification",
+      "source": "gold-b-001-equipment.json",
+      "locator": "selected equipment"
+    },
+    {
+      "evidence_id": "EEO-004",
+      "object_id": "GOLD-B-001",
+      "source_type": "drawing",
+      "source": "gold-b-001-drawing.json",
+      "locator": "HP-01"
+    }
+  ]
+}

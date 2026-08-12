@@ -1,0 +1,29 @@
+{
+  "dataset_id": "GOLD-B-001-ENVELOPE",
+  "object_id": "GOLD-B-001",
+  "assumption_status": "CONTROLLED_BASELINE_NOT_REAL_PROJECT_EVIDENCE",
+  "design": {
+    "outdoor_temp_c": -20.0,
+    "indoor_temp_c": 22.0,
+    "delta_t_k": 42.0,
+    "heated_area_m2": 220.0,
+    "heated_volume_m3": 616.0
+  },
+  "elements": [
+    {"id": "WALL-01", "type": "external_wall", "area_m2": 185.0, "u_w_m2k": 0.24},
+    {"id": "ROOF-01", "type": "roof", "area_m2": 125.0, "u_w_m2k": 0.18},
+    {"id": "FLOOR-01", "type": "floor", "area_m2": 110.0, "u_w_m2k": 0.28},
+    {"id": "WIN-01", "type": "window", "area_m2": 38.0, "u_w_m2k": 0.90},
+    {"id": "DOOR-01", "type": "external_door", "area_m2": 6.0, "u_w_m2k": 1.30}
+  ],
+  "ventilation": {
+    "air_changes_per_hour": 1.09,
+    "heat_recovery_efficiency": 0.0
+  },
+  "notes": [
+    "Synthetic controlled baseline for kernel validation only.",
+    "Air-change input includes combined ventilation and infiltration design allowance.",
+    "Must not be presented as verified customer/project evidence.",
+    "Replace with real project geometry, U-values, infiltration and ventilation data for commercial audit."
+  ]
+}

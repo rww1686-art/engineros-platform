@@ -1,0 +1,22 @@
+{
+  "dataset_id": "GOLD-B-001-EQUIPMENT-PERFORMANCE",
+  "object_id": "GOLD-B-001",
+  "assumption_status": "CONTROLLED_BASELINE_NOT_MANUFACTURER_EVIDENCE",
+  "equipment": {
+    "equipment_id": "HP-01",
+    "category": "air_to_water_heat_pump",
+    "nominal_capacity_kw": 16.0
+  },
+  "performance_points": [
+    {"outdoor_temp_c": 7.0, "leaving_water_temp_c": 35.0, "capacity_kw": 16.8},
+    {"outdoor_temp_c": 2.0, "leaving_water_temp_c": 35.0, "capacity_kw": 16.5},
+    {"outdoor_temp_c": -7.0, "leaving_water_temp_c": 35.0, "capacity_kw": 16.1},
+    {"outdoor_temp_c": -15.0, "leaving_water_temp_c": 45.0, "capacity_kw": 15.8},
+    {"outdoor_temp_c": -20.0, "leaving_water_temp_c": 45.0, "capacity_kw": 15.6}
+  ],
+  "notes": [
+    "Synthetic controlled performance map for kernel validation only.",
+    "Must not be represented as manufacturer-certified or customer-project evidence.",
+    "Commercial verification must replace this file with traceable manufacturer data."
+  ]
+}
